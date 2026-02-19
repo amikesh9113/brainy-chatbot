@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Brainy – AI School Chatbot</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  /* 🖼 Technology Background Image */
+  background: url("blue-artificial-intelligence-technology-background-hd-free-photo.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+/* Chat Container */
+.chatbox{
+  width:95%;
+  max-width:1100px;
+  height:85vh;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(1px);
+  border-radius:25px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 20px 50px rgba(0,0,0,0.4);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+/* Header */
+.chatbox h3{
+  margin:0;
+  padding:18px;
+  background:rgba(0,0,0,0.3);
+  color:white;
+  letter-spacing:1px;
+}
+
+/* Chat Area */
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:25px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* Messages */
+.message{
+  max-width:65%;
+  padding:12px 16px;
+  border-radius:15px;
+  font-size:20px;
+  animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.user{
+  align-self:flex-end;
+  background:#25d366;
+  color:white;
+  border-bottom-right-radius:5px;
+}
+
+.bot{
+  align-self:flex-start;
+  background:white;
+  border-bottom-left-radius:5px;
+}
+/* Input Area */
+.input-area{
+  display:flex;
+  padding:15px;
+  background:rgba(0,0,0,0.3);
+}
+
+input{
+  flex:1;
+  padding:14px;
+  border-radius:30px;
+  border:none;
+  outline:none;
+  font-size:14px;
+}
+
+button{
+  margin-left:10px;
+  width:50px;
+  border:none;
+  border-radius:50%;
+  background:#25d366;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+
+.mic-listening{
+  background:red !important;
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.2);}
+  100%{transform:scale(1);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="chatbox">
+  <h3>🧠 Brainy – AI School Chatbot </h3>
+
+  <div class="chat" id="chat"></div>
+<div class="input-area">
+  <input id="userInput" placeholder="Ask Brainy…" 
+         onkeydown="if(event.key==='Enter') reply()">
+  <button onclick="reply()">🎯</button>
+  <button id="micBtn" onclick="startListening()">🎤</button>
+</div>
+  </div>
+
+
+<script>
+
+// 🔊 Normal Speak
+function speak(text){
+  speechSynthesis.cancel();
+  let s = new SpeechSynthesisUtterance(text);
+  s.lang="en-US";
+  s.rate = 1;
+  s.pitch = 1;
+  speechSynthesis.speak(s);
+}
+
+// 🎵 Poem Rhythm Speak (Line by Line)
+function speakPoem(text){
+  speechSynthesis.cancel();
+  let lines = text.split("\n");
+  let i = 0;
+
+  function speakLine(){
+    if(i < lines.length){
+      let utter = new SpeechSynthesisUtterance(lines[i]);
+      utter.lang="en-US";
+      utter.rate = 0.85;
+      utter.pitch = 1.2;
+      speechSynthesis.speak(utter);
+      i++;
+      setTimeout(speakLine, 1800);
+    }
+  }
+
+  speakLine();
+}
+
+
+// ADD MESSAGE
+function addMessage(sender,text,cls){
+  let chat=document.getElementById("chat");
+  let div=document.createElement("div");
+  div.className="message "+cls;
+  div.innerHTML="<b>"+sender+":</b> "+text;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+// ✅ MAIN REPLY FUNCTION
+function reply(){
+
+  let box=document.getElementById("userInput");
+  let input=box.value.trim();
+  if(!input) return;
+
+  addMessage("You",input,"user");
+  box.value="";
+
+  let t=input.toLowerCase();
+  let r="I am under development and expanding my knowledge✌️";
+  let emoji="🤖";
+
+
+// 🎵 POEM SECTION
+if(t.includes("sing") || t.includes("recite")){
+r = `Listen carefully with joy and cheer,
+Brainy is here, no need to fear.
+Books and knowledge, shining bright,
+Learning with you, day and night.
+
+Math and science, fun and cool,
+I am your buddy in every school.
+Ask me questions, big or small,
+I am your Brainy, friend to all.`;
+emoji="🎵";
+}
+
+
+  if(t === "z" || t === "hello" || t === "hey" || t.includes("hello"))
+{
+    r = "Hi! 😊 I am Brainy from Doon Heritage International School. Ask me any school question.";
+    emoji = "👋";
+  }
+  else{
+    const qa = {
+
+      // 🌟 GK Questions
+      "national animal of india": "The national animal of India is the Bengal Tiger.",
+      "be my friend": "Yes, but as a Virtual friend.",
+      "national bird of india": "The national bird of India is the Peacock.",
+      "are you human": "No 😄 I am Brainy, a smart AI chatbot.",
+      "are you robot": "Yes 🤖 but a friendly one.",
+      "do you sleep": "No 😆 I work 24/7 for students.",
+      "your name": "This is Brainy❤️,you can ask me any question.",
+
+      "are you teacher": "I am your study buddy 📚.",
+      "national flower of india": "The national flower of India is the Lotus.",
+      "national anthem of india": "The national anthem of India is Jana Gana Mana.",
+      "how are you": "I am fine,thank you for asking me.",
+      "father of computer": "Charles Babbage is father of computer.",
+      "national song of india": "The national song of India is Vande Mataram.",
+      "capital of india": "The capital of India is New Delhi.",
+      "prime minister of india": "The Prime Minister of India is Narendra Modi.",
+      "president of india": "The President of India is Droupadi Murmu.",
+
+      "largest planet": "The largest planet in our solar system is Jupiter.",
+      "smallest planet": "The smallest planet in our solar system is Mercury.",
+      "red planet": "Mars is known as the Red Planet.",
+      "father of nation": "Mahatma Gandhi is called the Father of the Nation.",
+      "father of constitution": "Dr. B.R. Ambedkar is known as the Father of the Indian Constitution.",
+      "longest river in the world": "The Nile River is the longest river in the world.",
+      "highest mountain": "Mount Everest is the highest mountain in the world.",
+
+      // 🌍 SST Questions
+      "constitution": "The Constitution is the supreme law of the country. It tells how the government work and explains the rights and duties of citizens. All other laws must follow the constitution.",
+      "created": "My founder is Mr Amikesh Anand, Mr Tanuj, and Mr Astik❤️.",
+      "located": "Doon Heritage International School is located near Blowk Chowk Shakarpura.",
+      "democracy": "Democracy is a form of government in which the people choose thei leaders by voting. The government work according to will of the people.",
+      "federalism": "Federalism is a system of government in which power is divided between the central government and state governments. In countries like India,both levels of government have their own powers given by the Constitution.",
+      "rights": "Human rights are the basic rights and freedoms that every person has simply because they are human. These rights include the right to life, freedom, equality, and education.",
+      "duties": "Duties are responsibilities citizens must perform.",
+      "independence": "India gained independence on 15 August 1947.",
+      "constitution day": "Constitution Day is celebrated on 26 November.",
+      "cold war": "The Cold War was a period of political tension and rivalry between the United States and the Soviet Union after World War II. It was called a “cold” war because there was no direct large-scale fighting between the two countries, but there was strong competition in politics, weapons, and space.",
+      "industrial revolution": "The Industrial Revolution was a period of major change when machines replaced hand production in factories. It began in United Kingdom in the 18th century and led to rapid growth in industries, cities, and new inventions.",
+      "human rights": "Human rights are basic rights for every human being.",
+      "globalization": "Globalization is the process by which countries become more connected through trade, communication, technology, and culture. It allows people, goods, services, and ideas to move easily between countries around the world.",
+
+      // ➕➖ Math Questions
+      "factorial": "Factorial of n is n! = n × (n−1) × ... × 1.",
+      "percentage": "Percentage = (part/whole) × 100.",
+      "average": "Average = (Sum of values) ÷ (Number of values).",
+      "area of square": "Area of square = side × side.",
+      "perimeter of square": "Perimeter of square = 4 × side.",
+      "area of rectangle": "Area of rectangle = length × width.",
+      "perimeter of rectangle": "Perimeter of rectangle = 2 × (length + width).",
+      "pythagoras": "In a right triangle: a² + b² = c².",
+      "prime number": "A prime number has only two factors: 1 and itself.",
+      "hcf": "HCF is the highest common factor of two numbers.",
+      "lcm": "LCM is the lowest common multiple of two numbers.",
+      "ratio": "Ratio compares two quantities, like 3:2.",
+      "proportion": "Proportion is an equation that shows two ratios are equal.",
+      "simple interest": "Simple Interest = (P × R × T) / 100.",
+      "compound interest": "Compound Interest = P(1 + R/100)^T - P.",
+      "triangle area": "Area of triangle = 1/2 × base × height.",
+      "circle area": "Area of circle = πr².",
+      "circle circumference": "Circumference = 2πr.",
+
+      // 🔬 Science Questions
+      "photosynthesis": "Photosynthesis is the process by which green plants make their own food using sunlight, carbon dioxide, and water. It takes place in the leaves with the help of chlorophyll and produces glucose as food and oxygen as a by-product.",
+      "respiration": "Respiration is the process by which living organisms break down food to release energy. In humans, it involves breathing in oxygen and breathing out carbon dioxide.",
+      "acid": "An acid is a substance that produces hydrogen ions (H⁺) when dissolved in water. Acids usually have a sour taste and can turn blue litmus paper red.",
+      "base": "A base is a substance that produces hydroxide ions (OH⁻) when dissolved in water. Bases usually have a bitter taste and turn red litmus paper blue.",
+      "cell": "A cell is the basic structural and functional unit of life. All living organisms are made up of cells, and cells carry out all the important life processes.",
+      "force": "Force is a push or pull that can change the shape, speed, or direction of an object. It can make an object move, stop, or change its motion.",
+      "gravity": "Gravity is the force that pulls objects toward the Earth. It keeps us on the ground and makes things fall when we drop them.",
+      "electricity": "Electricity is a form of energy produced by the movement of electric charges. It is used to power lights, fans, machines, and many electronic devices.",
+      "magnet": "A magnet is an object that produces a magnetic field and attracts materials like iron, nickel, and cobalt. It has two poles—north and south—and opposite poles attract while similar poles repel.",
+      "evaporation": "Evaporation is the process by which a liquid changes into vapor at room temperature. It usually happens when a liquid is heated and the particles gain enough energy to escape into the air.",
+      "condensation": "Condensation is the process by which a gas changes into a liquid. It happens when water vapor cools and turns into tiny water droplets, like on the outside of a cold glass.",
+      "ecosystem": "An ecosystem is a community of living organisms like plants and animals interacting with each other and their physical environment. It includes both living (biotic) and non-living (abiotic) components working together as a system.",
+    };
+
+    for(let key in qa){
+      if(t.includes(key)){
+        r = qa[key];
+        emoji = "🧠";
+        break;
+      }
+    }
+
+    let calcMatch = t.match(/^\s*(-?\d+(\.\d+)?)\s*([\+\-\*\/])\s*(-?\d+(\.\d+)?)\s*$/);
+    if (calcMatch) {
+      let num1 = parseFloat(calcMatch[1]);
+      let operator = calcMatch[3].trim();
+      let num2 = parseFloat(calcMatch[4]);
+      let result;
+
+      if (operator === "+") result = num1 + num2;
+      if (operator === "-") result = num1 - num2;
+      if (operator === "*") result = num1 * num2;
+      if (operator === "/") result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
+
+      r = `Answer: ${result}`;
+      emoji = "🧮";
+    }
+  }
+
+  setTimeout(() => {
+    addMessage("Brainy", r + " " + emoji, "bot");
+    speak(r);
+  }, 500);
+}
+
+/* 🎤 VOICE RECOGNITION */
+let recognition;
+let micBtn = document.getElementById("micBtn");
+
+if ('webkitSpeechRecognition' in window) {
+  recognition = new webkitSpeechRecognition();
+} else if ('SpeechRecognition' in window) {
+  recognition = new SpeechRecognition();
+}
+
+if (recognition) {
+
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = function(){
+    micBtn.classList.add("mic-listening");
+  };
+
+  recognition.onend = function(){
+    micBtn.classList.remove("mic-listening");
+  };
+
+  recognition.onresult = function(event){
+    let speechText = event.results[0][0].transcript;
+    document.getElementById("userInput").value = speechText;
+    reply();
+  };
+
+  recognition.onerror = function(event){
+    console.log("Speech error:", event.error);
+    alert("Microphone error. Check permissions.");
+  };
+
+}   // ✅ THIS WAS MISSING
+
+function startListening(){
+  if(recognition){
+    recognition.start();
+  } else {
+    alert("Speech Recognition not supported in this browser. Use Google Chrome.");
+  }
+}
+
+
+</script>
+
+</body>
+</html>
