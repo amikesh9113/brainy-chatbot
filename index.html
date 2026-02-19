@@ -5,6 +5,54 @@
 <title>Brainy – AI School Chatbot</title>
 
 <style>
+  /* 📱 MOBILE RESPONSIVE */
+@media (max-width: 768px){
+
+  .chatbox{
+    width:100%;
+    height:100vh;
+    border-radius:0;
+  }
+
+  .chatbox h3{
+    font-size:16px;
+    text-align:center;
+  }
+
+  .chat{
+    padding:15px;
+  }
+
+  .message{
+    max-width:85%;
+    font-size:16px;
+  }
+
+  input{
+    font-size:16px;
+    padding:12px;
+  }
+
+  button{
+    width:45px;
+    height:45px;
+    font-size:16px;
+  }
+
+}
+
+/* 💻 LARGE SCREENS */
+@media (min-width: 1200px){
+
+  .chatbox{
+    max-width:1200px;
+  }
+
+  .message{
+    font-size:22px;
+  }
+
+}
 *{
   box-sizing:border-box;
 }
@@ -384,3 +432,4 @@ function startListening(){
 
 </body>
 </html>
+
