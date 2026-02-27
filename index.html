@@ -250,10 +250,12 @@ function reply(){
   let t=input.toLowerCase();
   let r="I am under development and expanding my knowledge✌️";
   let emoji="🤖";
+  let poemMode = false;
 
 
 // 🎵 POEM SECTION
 if(t.includes("sing") || t.includes("recite")){
+  poemMode = true;
 r = `Listen carefully with joy and cheer,
 Brainy is here, no need to fear.
 Books and knowledge, shining bright,
@@ -387,10 +389,10 @@ emoji="🎵";
  setTimeout(() => {
   addMessage("Brainy", r + " " + emoji, "bot");
 
-  if(t.includes("sing") || t.includes("recite")){
-      speakPoem(r);
+  if(poemMode){
+    speakPoem(r);
   } else {
-      speak(r);
+    speak(r);
   }
 
 }, 500);
@@ -446,6 +448,7 @@ function startListening(){
 
 </body>
 </html>
+
 
 
 
