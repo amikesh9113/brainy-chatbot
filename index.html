@@ -371,70 +371,20 @@ emoji="🎵";
       }
     }
 
-    // 🧮 ULTRA PRO MAX CALCULATOR
-try{
+   let calcMatch = t.match(/^\s*(-?\d+(\.\d+)?)\s*([\+\-\*\/])\s*(-?\d+(\.\d+)?)\s*$/);
+if (calcMatch) {
+  let num1 = parseFloat(calcMatch[1]);
+  let operator = calcMatch[3].trim();
+  let num2 = parseFloat(calcMatch[4]);
+  let result;
 
-  // Factorial (5!)
-  if(t.endsWith("!")){
-    let n=parseInt(t.replace("!",""));
-    let f=1;
-    for(let i=1;i<=n;i++) f*=i;
-    r="Factorial = "+f;
-    emoji="🧮";
-  }
+  if (operator === "+") result = num1 + num2;
+  if (operator === "-") result = num1 - num2;
+  if (operator === "*") result = num1 * num2;
+  if (operator === "/") result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
 
-  // Square Root (sqrt 144)
-  else if(t.startsWith("sqrt")){
-    let num=parseFloat(t.replace("sqrt",""));
-    r="Square Root = "+Math.sqrt(num);
-    emoji="🧮";
-  }
-
-  // Percentage (25% of 400)
-  else if(t.includes("% of")){
-    let p=t.split("% of");
-    r="Answer = "+((parseFloat(p[0])/100)*parseFloat(p[1]));
-    emoji="🧮";
-  }
-
-  // Power (2^5)
-  else if(t.includes("^")){
-    let p=t.split("^");
-    r="Answer = "+Math.pow(parseFloat(p[0]),parseFloat(p[1]));
-    emoji="🧮";
-  }
-
-  // Sin Cos Tan (Degree)
-  else if(t.startsWith("sin")){
-    r="Answer = "+Math.sin(parseFloat(t.replace("sin",""))*Math.PI/180);
-    emoji="🧮";
-  }
-
-  else if(t.startsWith("cos")){
-    r="Answer = "+Math.cos(parseFloat(t.replace("cos",""))*Math.PI/180);
-    emoji="🧮";
-  }
-
-  else if(t.startsWith("tan")){
-    r="Answer = "+Math.tan(parseFloat(t.replace("tan",""))*Math.PI/180);
-    emoji="🧮";
-  }
-
-  // Log
-  else if(t.startsWith("log")){
-    r="Answer = "+Math.log10(parseFloat(t.replace("log","")));
-    emoji="🧮";
-  }
-
-  // Full Expression (2+3*5-4/2)
-  else if(/^[0-9+\-*/(). ]+$/.test(t)){
-    r="Answer = "+Function('"use strict";return ('+t+')')();
-    emoji="🧮";
-  }
-
-}catch{
-  r="Invalid Expression ❌";
-  emoji="🧮";
+  r = `Answer: ${result}`;
+  emoji = "🧮";
 }
   setTimeout(() => {
     addMessage("Brainy", r + " " + emoji, "bot");
@@ -499,6 +449,7 @@ function startListening(){
 
 </body>
 </html>
+
 
 
 
