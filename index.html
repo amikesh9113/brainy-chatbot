@@ -219,7 +219,7 @@ function speakPoem(text){
       utter.pitch = 1.2;
       speechSynthesis.speak(utter);
       i++;
-      setTimeout(speakLine, 1800);
+      setTimeout(speakLine, 2200);
     }
   }
 
@@ -312,7 +312,7 @@ emoji="🎵";
       "federalism": "Federalism is a system of government in which power is divided between the central government and state governments. In countries like India,both levels of government have their own powers given by the Constitution.",
       "rights": "Human rights are the basic rights and freedoms that every person has simply because they are human. These rights include the right to life, freedom, equality, and education.",
       "duties": "Duties are responsibilities citizens must perform.",
-      "AI": "The ability of a computer or machine that would normally require human intelligence.",
+      "ai": "The ability of a computer or machine that would normally require human intelligence.",
       "machine learning": "A type of AI Where computer improves performance by learning from data.",
       "natural language processing": "AI that allows computers to understand & interact using human language.",
       "helps in different areas": "It helps in entertainig us, in healthcare, and in communication.",
@@ -384,10 +384,16 @@ emoji="🎵";
     }
   }
 
-  setTimeout(() => {
-    addMessage("Brainy", r + " " + emoji, "bot");
-    speak(r);
-  }, 500);
+ setTimeout(() => {
+  addMessage("Brainy", r + " " + emoji, "bot");
+
+  if(t.includes("sing") || t.includes("recite")){
+      speakPoem(r);
+  } else {
+      speak(r);
+  }
+
+}, 500);
 }
 
 /* 🎤 VOICE RECOGNITION */
@@ -440,6 +446,7 @@ function startListening(){
 
 </body>
 </html>
+
 
 
 
