@@ -269,7 +269,7 @@ emoji="🎵";
 }
 
 
-  if(t === "z" || t === "hello" || t === "hey" || t.includes("hello"))
+  else if(t === "z" || t === "hello" || t === "hey" || t.includes("hello"))
 {
     r = "Hi! 😊 I am Brainy from Doon Heritage International School. Ask me any school question.";
     emoji = "👋";
@@ -386,16 +386,26 @@ emoji="🎵";
     }
   }
 
- setTimeout(() => {
-  addMessage("Brainy", r + " " + emoji, "bot");
+ function speakPoem(text){
+  speechSynthesis.cancel();
+  let lines = text.split("\n");
+  let i = 0;
 
-  if(poemMode){
-    speakPoem(r);
-  } else {
-    speak(r);
+  function speakLine(){
+    if(i < lines.length){
+      let utter = new SpeechSynthesisUtterance(lines[i]);
+      utter.lang="en-US";
+      utter.rate = 0.75;   // slower for rhythm
+      utter.pitch = 1.3;   // little musical tone
+
+      utter.onend = speakLine;  // wait until line finishes
+      speechSynthesis.speak(utter);
+      i++;
+    }
   }
 
-}, 500);
+  speakLine();
+}
 }
 
 /* 🎤 VOICE RECOGNITION */
@@ -448,6 +458,7 @@ function startListening(){
 
 </body>
 </html>
+
 
 
 
