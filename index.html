@@ -371,21 +371,23 @@ emoji="🎵";
       }
     }
 
-   let calcMatch = t.match(/^\s*(-?\d+(\.\d+)?)\s*([\+\-\*\/])\s*(-?\d+(\.\d+)?)\s*$/);
-if (calcMatch) {
-  let num1 = parseFloat(calcMatch[1]);
-  let operator = calcMatch[3].trim();
-  let num2 = parseFloat(calcMatch[4]);
-  let result;
+    let calcMatch = t.match(/^\s*(-?\d+(\.\d+)?)\s*([\+\-\*\/])\s*(-?\d+(\.\d+)?)\s*$/);
+    if (calcMatch) {
+      let num1 = parseFloat(calcMatch[1]);
+      let operator = calcMatch[3].trim();
+      let num2 = parseFloat(calcMatch[4]);
+      let result;
 
-  if (operator === "+") result = num1 + num2;
-  if (operator === "-") result = num1 - num2;
-  if (operator === "*") result = num1 * num2;
-  if (operator === "/") result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
+      if (operator === "+") result = num1 + num2;
+      if (operator === "-") result = num1 - num2;
+      if (operator === "*") result = num1 * num2;
+      if (operator === "/") result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
 
-  r = `Answer: ${result}`;
-  emoji = "🧮";
-}
+      r = `Answer: ${result}`;
+      emoji = "🧮";
+    }
+  }
+
   setTimeout(() => {
     addMessage("Brainy", r + " " + emoji, "bot");
 
@@ -449,20 +451,3 @@ function startListening(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
